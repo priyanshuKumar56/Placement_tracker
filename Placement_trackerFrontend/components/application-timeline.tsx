@@ -1,29 +1,24 @@
-"use client"
-
-import type { ApplicationStage } from "@/lib/types"
-import { cn } from "@/lib/utils"
-
-const stages: ApplicationStage[] = ["applied", "test", "shortlisted", "interview", "offer", "joined"]
-
-export function ApplicationTimeline({ current }: { current: ApplicationStage }) {
+export function ApplicationTimeline({
+  status,
+}: { status: "applied" | "under_review" | "shortlisted" | "rejected" | "hired" }) {
+  const steps = ["applied", "under_review", "shortlisted", "hired"] as const
   return (
-    <ol className="flex items-center gap-2">
-      {stages.map((s, i) => {
-        const active = stages.indexOf(current) >= i
+    <div className="flex items-center gap-2 text-xs">
+      {steps.map((s, i) => {
+        const active = steps.indexOf(status as any) >= i && status !== "rejected"
+        const rejected = status === "rejected" && s === "under_review"
         return (
-          <li key={s} className="flex items-center">
-            <span
-              className={cn(
-                "rounded-full border px-2 py-1 text-xs capitalize",
-                active ? "bg-primary text-primary-foreground border-primary" : "text-muted-foreground",
-              )}
-            >
-              {s}
+          <div key={s} className="flex items-center gap-2">
+            <div
+              className={`h-2 w-2 rounded-full ${active ? "bg-primary" : rejected ? "bg-destructive" : "bg-muted"}`}
+            />
+            <span className={`capitalize ${active ? "text-foreground" : "text-muted-foreground"}`}>
+              {s.replace("_", " ")}
             </span>
-            {i < stages.length - 1 && <span className="mx-2 h-px w-8 bg-muted" />}
-          </li>
+            {i < steps.length - 1 && <span className="text-muted-foreground">›</span>}
+          </div>
         )
       })}
-    </ol>
+    </div>
   )
 }

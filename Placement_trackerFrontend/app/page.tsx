@@ -1,212 +1,386 @@
-"use client"
-
-import Navbar from "@/components/navbar"
-import { SearchBar } from "@/components/search-bar"
-import { JobFilters } from "@/components/job-filters"
-import { JobCard } from "@/components/job-card"
-import { useMemo, useState } from "react"
-import { useSelector } from "react-redux"
-import type { RootState } from "@/lib/store"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import HeroSection from "@/components/hero-section"
 
-export default function HomePage() {
-  const router = useRouter()
-  const [query, setQuery] = useState("")
-  const [filters, setFilters] = useState<any>({})
-  const jobs = useSelector((s: RootState) => s.jobs.items)
-
-  const list = useMemo(() => {
-    return jobs
-      .filter((j) => j.approved)
-      .filter(
-        (j) =>
-          !query ||
-          (j.title + " " + j.company + " " + j.location + " " + j.domain).toLowerCase().includes(query.toLowerCase()),
-      )
-      .filter((j) => !filters.location || filters.location === "all" || j.location === filters.location)
-      .filter((j) => !filters.tier || filters.tier === "all" || j.tier === filters.tier)
-      .filter((j) => !filters.type || filters.type === "all" || j.type === filters.type)
-      .filter((j) => !filters.minSalary || (j.salaryLPA ?? 0) >= (filters.minSalary ?? 0))
-      .slice(0, 6)
-  }, [jobs, query, filters])
-
+export default function Home() {
   return (
-    <div>
-      <Navbar />
-      <main className="mx-auto max-w-6xl px-4 py-8">
-        {/* Hero section with illustration and stats */}
-        <section className="grid gap-6 md:grid-cols-2 md:items-center">
-          <div className="flex flex-col gap-4">
-            <h1 className="text-4xl font-semibold text-balance">
-              Discover internships and jobs. Track your placement journey end-to-end.
-            </h1>
-            <p className="max-w-2xl text-muted-foreground">
-              Built for final-year students and freshers. Apply to curated opportunities, build resumes, practice tests,
-              and visualize your path from Applied to Joined — all in one place.
-            </p>
+    <main className="px-4 py-10">
+      <HeroSection />
+      {/* Trusted By */}
+      
 
-          </div>
-          <div className="hidden md:block">
-            <img
-              src="/67c821501ca0d_jobs_header_img.webp"
-              alt="Students preparing for placements"
-              className="mx-auto rounded-lg border shadow-sm transition-transform duration-700 ease-out hover:scale-[1.02]"
-            />
-          </div>
-        </section>
-
-        {/* Stats section */}
-        <section className="mt-12">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {[
-              { k: "Opportunities", v: "1,200+" },
-              { k: "Companies", v: "300+" },
-              { k: "Students placed", v: "5,000+" },
-              { k: "Avg. package", v: "₹9.2 LPA" },
-            ].map((s) => (
-              <div key={s.k} className="rounded-md border p-4 text-center">
-                <div className="text-2xl font-semibold">{s.v}</div>
-                <div className="text-sm text-muted-foreground">{s.k}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Featured snapshot (not replacing Jobs page) */}
-        <section className="mt-8">
-          <div className="grid gap-4">
-            <SearchBar
-              value={query}
-              onChange={setQuery}
-              onSubmit={(q) => router.push(`/jobs?q=${encodeURIComponent(q)}`)}
-              placeholder="Try “SDE Intern”, “Data Analyst, Bangalore”, or “Tier-1 remote”"
-            />
-            <JobFilters onChange={(f) => setFilters((p: any) => ({ ...p, ...f }))} />
-          </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {list.map((j) => (
-              <JobCard key={j.id} job={j} />
-            ))}
-          </div>
-          <div className="mt-4 text-center">
-            <Link href="/jobs" className="text-primary hover:underline">
-              View all opportunities →
-            </Link>
-          </div>
+      <div className="mx-auto grid max-w-6xl gap-8">
+        {/* Feature Grid */}
+        <section aria-labelledby="features-title" className="grid grid-cols-1 gap-4 md:grid-cols-4">
+          {[
+            {
+              title: "Resume Builder",
+              desc: "Create polished resumes, import from PDF, and export tailored versions.",
+              href: "/tools/resume-builder",
+              img: "/resume-builder-preview.png",
+            },
+            {
+              title: "Test Preparation",
+              desc: "Practice aptitude, coding challenges, and interview patterns.",
+              href: "/tests/prep",
+              img: "/test-prep-dashboard.png",
+            },
+            {
+              title: "Job Listings",
+              desc: "Explore curated roles for students and fresh graduates.",
+              href: "/jobs",
+              img: "/job-board-listings.png",
+            },
+            {
+              title: "Profiles",
+              desc: "Build comprehensive profiles with skills, projects, and achievements.",
+              href: "/profile",
+              img: "/student-profile-preview.png",
+            },
+          ].map((f) => (
+            <Card key={f.title} className="flex flex-col">
+              <CardHeader>
+                <CardTitle className="font-serif">{f.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="flex grow flex-col gap-3">
+                <p className="text-sm text-muted-foreground">{f.desc}</p>
+                <img
+                  src={f.img || "/placeholder.svg"}
+                  alt={`${f.title} preview`}
+                  className="w-full rounded-md border"
+                />
+                <div className="mt-auto">
+                  <Button asChild variant="secondary">
+                    <Link href={f.href}>Open</Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </section>
 
         {/* Categories */}
-        <section className="mt-12">
-          <h2 className="mb-4 text-2xl font-semibold">Explore categories</h2>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Link href="/jobs?q=software" className="rounded-md border p-4 hover:bg-accent">
-              <div className="font-medium">Software & IT</div>
-              <div className="text-sm text-muted-foreground">SDE, QA, DevOps, Data</div>
-            </Link>
-            <Link href="/jobs?q=analytics" className="rounded-md border p-4 hover:bg-accent">
-              <div className="font-medium">Analytics</div>
-              <div className="text-sm text-muted-foreground">Data Analyst, BI, ML</div>
-            </Link>
-            <Link href="/jobs?q=core" className="rounded-md border p-4 hover:bg-accent">
-              <div className="font-medium">Core Engineering</div>
-              <div className="text-sm text-muted-foreground">Mechanical, EEE, Civil</div>
-            </Link>
-            <Link href="/jobs?q=business" className="rounded-md border p-4 hover:bg-accent">
-              <div className="font-medium">Business</div>
-              <div className="text-sm text-muted-foreground">Product, Ops, Marketing</div>
-            </Link>
-          </div>
+        <section aria-labelledby="categories-title" className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <h2 id="categories-title" className="sr-only">
+            Categories
+          </h2>
+          {[
+            { name: "Technology", query: "technology jobs illustration", href: "/jobs?category=technology" },
+            { name: "Business", query: "business jobs illustration", href: "/jobs?category=business" },
+            { name: "Design", query: "design jobs illustration", href: "/jobs?category=design" },
+            { name: "Marketing", query: "marketing jobs illustration", href: "/jobs?category=marketing" },
+            { name: "Finance", query: "finance jobs illustration", href: "/jobs?category=finance" },
+            { name: "Healthcare", query: "healthcare jobs illustration", href: "/jobs?category=healthcare" },
+          ].map((c) => (
+            <Card key={c.name}>
+              <CardHeader>
+                <CardTitle className="font-serif">{c.name}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <img
+                  src={`/abstract-geometric-shapes.png?height=140&width=480&query=${encodeURIComponent(c.query)}`}
+                  alt={`${c.name} category`}
+                  className="w-full rounded-md border"
+                />
+                <Button asChild>
+                  <Link href={c.href}>Explore {c.name}</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
         </section>
 
-        {/* Features */}
-        <section className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
-          <Card>
-            <CardHeader>
-              <CardTitle>Resume Builder</CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              Create multiple resume versions and export as PDF. Auto-fill from your profile.
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Application Tracking</CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              Visual timeline from Applied to Joined with notifications on every update.
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Practice Tests</CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm text-muted-foreground">
-              Mock aptitude and coding tests, analytics and leaderboards. (Mocked)
-            </CardContent>
-          </Card>
-        </section>
-
-        {/* How It Works section */}
-        <section className="mt-12">
-          <h2 className="mb-6 text-center text-2xl font-semibold">How it works</h2>
-          <div className="grid gap-4 md:grid-cols-4">
+        {/* Recent Jobs Preview */}
+        <section aria-labelledby="recent-jobs-title" className="space-y-4">
+          <h2 id="recent-jobs-title" className="font-serif text-2xl">
+            Recent Jobs
+          </h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {[
-              { title: "Create profile", desc: "Register and complete your student/company details." },
-              { title: "Discover", desc: "Search and filter curated internships and jobs." },
-              { title: "Apply & track", desc: "Choose a resume, apply, and track your progress." },
-              { title: "Get placed", desc: "Receive offers and finalize your placement." },
-            ].map((s, i) => (
-              <div
-                key={s.title}
-                className="rounded-lg border p-5 transition-all duration-500 hover:-translate-y-0.5 hover:shadow-sm"
-                style={{ transitionDelay: `${i * 60}ms` }}
-              >
-                <div className="text-lg font-medium">{s.title}</div>
-                <div className="mt-1 text-sm text-muted-foreground">{s.desc}</div>
-              </div>
+              { role: "Frontend Intern", company: "Acme Corp", location: "Remote", date: "2d ago" },
+              { role: "Data Analyst", company: "Globex", location: "NY, USA", date: "3d ago" },
+              { role: "UX Designer", company: "Umbrella", location: "Berlin, DE", date: "5d ago" },
+            ].map((j) => (
+              <Card key={j.role}>
+                <CardHeader>
+                  <CardTitle className="font-serif text-xl">{j.role}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-1 text-sm text-muted-foreground">
+                  <p>
+                    <span className="text-foreground">{j.company}</span> • {j.location}
+                  </p>
+                  <p>Posted {j.date}</p>
+                  <div className="pt-2">
+                    <Button asChild size="sm">
+                      <Link href="/jobs">{"View details"}</Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </section>
 
-        {/* Testimonials section */}
-        <section className="mt-12 grid items-center gap-6 md:grid-cols-2">
-          <div className="order-2 overflow-hidden rounded-xl md:order-1">
-            <img
-              src="/images/collab.jpg"
-              alt="Collaboration"
-              className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
-            />
+        {/* How It Works */}
+        <section aria-labelledby="how-title" className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="rounded-lg border bg-card p-6">
+            <h2 id="how-title" className="font-serif text-2xl">
+              How it works for Students
+            </h2>
+            <ol className="mt-4 space-y-3 text-sm text-muted-foreground">
+              <li>1. Create your profile and import your resume.</li>
+              <li>2. Practice with test prep to strengthen your skills.</li>
+              <li>3. Apply to jobs and track your applications.</li>
+            </ol>
+            <div className="mt-4">
+              <Button asChild>
+                <Link href="/register">Create Student Account</Link>
+              </Button>
+            </div>
           </div>
-          <div className="order-1 md:order-2">
-            <h2 className="text-2xl font-semibold">What students say</h2>
-            <div className="mt-4 space-y-4">
-              <blockquote className="rounded-lg border p-4 text-sm text-muted-foreground">
-                “The tracker made applications easy. I could see every stage from Applied to Offer.”
-                <div className="mt-2 text-xs text-foreground">— Aditi, CSE ‘25</div>
-              </blockquote>
-              <blockquote className="rounded-lg border p-4 text-sm text-muted-foreground">
-                “Resume versions + company-specific tests helped me secure a Tier-1 offer.”
-                <div className="mt-2 text-xs text-foreground">— Farhan, ECE ‘24</div>
-              </blockquote>
+          <div className="rounded-lg border bg-card p-6">
+            <h2 className="font-serif text-2xl">How it works for Recruiters</h2>
+            <ol className="mt-4 space-y-3 text-sm text-muted-foreground">
+              <li>1. Register your company and set up your profile.</li>
+              <li>2. Post jobs and manage applicants in your dashboard.</li>
+              <li>3. Shortlist candidates and streamline hiring.</li>
+            </ol>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Button asChild variant="outline">
+                <Link href="/company/register">Recruiter Register</Link>
+              </Button>
+              <Button asChild variant="secondary">
+                <Link href="/company/login">Recruiter Login</Link>
+              </Button>
             </div>
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="mt-12 rounded-md border p-6 text-center">
-          <h3 className="text-xl font-semibold">Ready to get started?</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Create your account to unlock resume builder and tracking.
-          </p>
-          <div className="mt-4">
-            <Link href="/register" className="text-primary hover:underline">
-              Register now →
-            </Link>
+        <section aria-labelledby="roles-title" className="mx-auto max-w-6xl space-y-4">
+          <h2 id="roles-title" className="font-serif text-2xl">
+            Explore by role
+          </h2>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-serif">Students</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-muted-foreground">
+                <p>Build your profile, create resumes, prep for tests, and apply to jobs.</p>
+                <div className="flex gap-2">
+                  <Button asChild>
+                    <Link href="/register">Create Account</Link>
+                  </Button>
+                  <Button asChild variant="secondary">
+                    <Link href="/login">Login</Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-serif">Recruiters</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-muted-foreground">
+                <p>Register your company, post jobs, manage applicants, and hire faster.</p>
+                <div className="flex gap-2">
+                  <Button asChild variant="outline">
+                    <Link href="/company/register">Register</Link>
+                  </Button>
+                  <Button asChild>
+                    <Link href="/company/login">Login</Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-serif">TPO Admin</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-muted-foreground">
+                <p>Set placement rules, approve jobs, and monitor student applications.</p>
+                <div className="flex gap-2">
+                  <Button asChild variant="secondary">
+                    <Link href="/tpo/login">TPO Login</Link>
+                  </Button>
+                  <Button asChild variant="outline">
+                    <Link href="/tpo/register">Register</Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </section>
-      </main>
-    </div>
+
+        {/* Testimonials */}
+        <section aria-labelledby="testimonials-title" className="space-y-4">
+          <h2 id="testimonials-title" className="font-serif text-2xl">
+            What users say
+          </h2>
+          <div className="flex gap-4 overflow-x-auto py-1 [scrollbar-width:none] [-ms-overflow-style:none]">
+            {[
+              {
+                quote: "The resume builder helped me land my first internship!",
+                name: "Aisha, Student",
+              },
+              {
+                quote: "Posting roles and reviewing candidates is smooth and fast.",
+                name: "Rahul, Recruiter",
+              },
+              {
+                quote: "The test prep section improved my coding interview skills.",
+                name: "Mina, Graduate",
+              },
+            ].map((t, idx) => (
+              <Card key={idx} className="min-w-[280px] max-w-sm">
+                <CardContent className="pt-6">
+                  <p className="text-sm text-muted-foreground">“{t.quote}”</p>
+                  <p className="mt-3 text-sm font-medium text-foreground">{t.name}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        {/* Metrics */}
+        <section aria-labelledby="metrics-title" className="space-y-4">
+          <h2 id="metrics-title" className="font-serif text-2xl">
+            By the numbers
+          </h2>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {[
+              { value: "25k+", label: "Resumes created" },
+              { value: "4.8/5", label: "Avg user rating" },
+              { value: "3k+", label: "Jobs posted" },
+              { value: "1.2k+", label: "Companies hiring" },
+            ].map((m) => (
+              <div key={m.label} className="rounded-lg border bg-card p-6 text-center">
+                <div className="font-serif text-2xl">{m.value}</div>
+                <div className="text-sm text-muted-foreground">{m.label}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section aria-labelledby="faq-title" className="space-y-4">
+          <h2 id="faq-title" className="font-serif text-2xl">
+            Frequently asked questions
+          </h2>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="q1">
+              <AccordionTrigger>Is the resume builder free?</AccordionTrigger>
+              <AccordionContent>
+                Yes. You can create and export resumes for free. Premium templates may be added later.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="q2">
+              <AccordionTrigger>Can recruiters contact students directly?</AccordionTrigger>
+              <AccordionContent>
+                Yes. Recruiters can message candidates once they apply to a job or are shortlisted.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="q3">
+              <AccordionTrigger>Do you offer interview practice?</AccordionTrigger>
+              <AccordionContent>
+                The test prep section includes aptitude, coding challenges, and interview patterns to help you prepare.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </section>
+
+        {/* CTA Banner */}
+        <section className="rounded-lg bg-primary text-primary-foreground p-6 md:p-10">
+          <div className="mx-auto max-w-4xl">
+            <h2 className="font-serif text-2xl md:text-3xl">Ready to accelerate your journey?</h2>
+            <p className="mt-2 text-primary-foreground/90">
+              Join thousands of students and recruiters using our platform to build better careers and teams.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Button asChild variant="secondary">
+                <Link href="/register">Create Student Account</Link>
+              </Button>
+              <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+                <Link href="/company/register">Create Recruiter Account</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="mt-6 grid grid-cols-1 gap-6 rounded-lg border bg-card p-6 md:grid-cols-4">
+          <div>
+            <div className="font-serif text-lg">Career Platform</div>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Tools for students and recruiters to connect, learn, and hire.
+            </p>
+          </div>
+          <div>
+            <div className="font-medium">Product</div>
+            <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
+              <li>
+                <Link href="/tools/resume-builder" className="hover:text-foreground">
+                  Resume Builder
+                </Link>
+              </li>
+              <li>
+                <Link href="/tests/prep" className="hover:text-foreground">
+                  Test Preparation
+                </Link>
+              </li>
+              <li>
+                <Link href="/jobs" className="hover:text-foreground">
+                  Job Board
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div className="font-medium">Recruiters</div>
+            <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
+              <li>
+                <Link href="/company/register" className="hover:text-foreground">
+                  Register
+                </Link>
+              </li>
+              <li>
+                <Link href="/company/login" className="hover:text-foreground">
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link href="/company/dashboard" className="hover:text-foreground">
+                  Dashboard
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div className="font-medium">Company</div>
+            <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
+              <li>
+                <Link href="/about" className="hover:text-foreground">
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy" className="hover:text-foreground">
+                  Privacy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="hover:text-foreground">
+                  Terms
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </footer>
+      </div>
+    </main>
   )
 }
