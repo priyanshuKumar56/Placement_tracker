@@ -33,6 +33,7 @@ export default function AccountStep({ onNext, data, updateData }: AccountStepPro
 
   const handleSubmit = () => {
     updateData({ email, password });
+    
     onNext();
   };
 
@@ -46,7 +47,7 @@ export default function AccountStep({ onNext, data, updateData }: AccountStepPro
 
   return (
     <div className="p-8 animate-slide-up">
-      <h2 className="text-xl font-medium text-white mb-2">Create your account</h2>
+      <h2 className="text-xl font-medium text-white mb-2">Access your account Login or Sign Up</h2>
       <p className="text-sm text-zinc-500 mb-6">Start your journey with a secure identity.</p>
 
       <div className="space-y-4">

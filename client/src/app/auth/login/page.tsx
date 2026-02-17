@@ -1,10 +1,7 @@
-import LoginPage from '@/components/Auth_components/LoginPage'
-import { NextPage } from 'next'
+'use client';
 
-interface Props {}
+import OnboardingFlow from '@/components/Auth_components/OnboardingFlow';
 
-const Page: NextPage<Props> = ({}) => {
-  return <LoginPage />
+export default function OnboardingPage() {
+  return <OnboardingFlow />;
 }
-
-export default Page

@@ -25,7 +25,7 @@ const jobs: Job[] = [
   {
     id: '2',
     title: 'AI Researcher',
-    company: 'Nexus Labs',
+    company: 'RiseUp Labs',
     location: 'San Francisco',
     salary: '$200k+',
     icon: 'atom',
@@ -55,12 +55,12 @@ const CuratedRoles: React.FC = () => {
         <div className="flex gap-2">
           <button className="w-10 h-10 rounded-full border border-zinc-800 text-white flex items-center justify-center hover:bg-zinc-800 transition-colors">
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M3 6h18M3 12h18M3 18h18" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M3 6h18M3 12h18M3 18h18" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           </button>
           <button className="w-10 h-10 rounded-full border border-zinc-800 text-white flex items-center justify-center hover:bg-zinc-800 transition-colors">
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
         </div>
@@ -68,18 +68,18 @@ const CuratedRoles: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {jobs.map((job) => (
-          <div 
-            key={job.id} 
+          <div
+            key={job.id}
             className="glass-card p-6 rounded-2xl group glass-card-hover transition-colors cursor-pointer relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-2 group-hover:translate-x-0">
               <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M7 17L17 7M17 7H7M17 7v10" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M7 17L17 7M17 7H7M17 7v10" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </div>
             <div className={`w-12 h-12 ${job.iconBg} rounded-lg flex items-center justify-center mb-6 text-${job.iconBg === 'bg-white' ? 'black' : 'white'} text-xl font-bold`}>
               <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <circle cx="12" cy="12" r="10" strokeWidth="1.5"/>
+                <circle cx="12" cy="12" r="10" strokeWidth="1.5" />
               </svg>
             </div>
             <div className="mb-8">
@@ -90,8 +90,8 @@ const CuratedRoles: React.FC = () => {
             </div>
             <div className="flex gap-2 flex-wrap">
               {job.skills.map((skill, index) => (
-                <span 
-                  key={index} 
+                <span
+                  key={index}
                   className="text-[10px] text-zinc-400 border border-zinc-800 px-2 py-1 rounded"
                 >
                   {skill}

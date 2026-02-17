@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 const Navigation: React.FC = () => {
@@ -19,6 +20,7 @@ const Navigation: React.FC = () => {
         
         <a 
           href="#features" 
+          
           className="w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center text-white transition-colors" 
           title="Features"
         >
@@ -61,12 +63,12 @@ const Navigation: React.FC = () => {
         
         <div className="h-6 w-px bg-white/10 mx-1"></div>
         
-        <a 
-          href="#" 
+        <Link 
+          href="/auth/login" 
           className="px-4 h-10 rounded-full hover:bg-white/10 flex items-center justify-center text-white text-sm font-medium transition-colors"
         >
           Log in
-        </a>
+        </Link>
       </div>
     </nav>
   );

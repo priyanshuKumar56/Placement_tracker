@@ -4,9 +4,10 @@ import { Icon } from '@iconify/react';
 
 interface SuccessStepProps {
   onComplete: () => void;
+  data:any
 }
 
-export default function SuccessStep({ onComplete }: SuccessStepProps) {
+export default function SuccessStep({ onComplete ,data }: SuccessStepProps) {
   return (
     <div className="p-10 text-center animate-slide-up">
       <div className="w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 flex items-center justify-center mx-auto mb-6">

@@ -21,7 +21,7 @@ export default function HackathonsView() {
             Live Now
           </div>
           <h2 className="text-4xl font-medium text-white tracking-tight mb-2">
-            Nexus Global Summit &apos;24
+            RiseUp Global Summit &apos;24
           </h2>
           <p className="text-zinc-300 max-w-xl mb-6">
             Join 10,000+ developers building the future of decentralized finance. $250k in prizes.

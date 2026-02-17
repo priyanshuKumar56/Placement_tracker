@@ -31,7 +31,7 @@ export default function Sidebar({ currentView, onViewChange }: SidebarProps) {
           <div className="w-6 h-6 rounded bg-white text-black flex items-center justify-center">
             <Icon icon="solar:atom-linear" className="text-sm" />
           </div>
-          <span>Nexus</span>
+          <span>RiseUp</span>
         </div>
         <div className="ml-auto text-[10px] text-zinc-600 border border-zinc-800 rounded px-1.5 py-0.5 font-mono">
           v2.4
@@ -48,11 +48,10 @@ export default function Sidebar({ currentView, onViewChange }: SidebarProps) {
           <button
             key={item.id}
             onClick={() => onViewChange(item.id)}
-            className={`w-full flex items-center gap-3 px-6 py-2.5 transition-all text-left ${
-              currentView === item.id
+            className={`w-full flex items-center gap-3 px-6 py-2.5 transition-all text-left ${currentView === item.id
                 ? 'bg-white/5 text-white border-r-2 border-white'
                 : 'text-zinc-400 hover:bg-white/[0.02] hover:text-zinc-200'
-            }`}
+              }`}
           >
             <Icon icon={item.icon} className="text-lg" />
             <span className="flex-1">{item.label}</span>

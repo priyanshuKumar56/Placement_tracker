@@ -13,7 +13,7 @@ export default function WelcomeStep({ onNext }: WelcomeStepProps) {
         <Icon icon="solar:atom-bold" className="text-2xl" />
       </div>
       <h1 className="text-2xl font-semibold text-white tracking-tight mb-2">
-        Welcome to Nexus
+        Welcome to RiseUp
       </h1>
       <p className="text-zinc-400 mb-8 max-w-xs mx-auto leading-relaxed">
         The all-in-one platform for developers to find jobs, showcase skills, and win hackathons.

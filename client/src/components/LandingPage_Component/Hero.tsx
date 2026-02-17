@@ -7,7 +7,7 @@ const Hero: React.FC = () => {
       {/* Header / Logo Area */}
       <div className="col-span-1 md:col-span-12 flex justify-between items-center mb-8 px-2">
         <div className="text-xs font-medium tracking-[0.2em] text-zinc-500 uppercase">
-          Nexus Interface v2.0
+          RiseUp Interface v2.0
         </div>
         <div className="flex items-center gap-2 text-xs font-medium text-white border border-white/10 px-3 py-1 rounded-full bg-white/5">
           <span className="relative flex h-2 w-2">

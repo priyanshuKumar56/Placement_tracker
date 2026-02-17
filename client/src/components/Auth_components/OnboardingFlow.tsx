@@ -18,14 +18,28 @@ export interface OnboardingData {
   firstName: string;
   lastName: string;
   currentRole: string;
+  // Education fields
+  collegeName: string;
+  course: string;
+  specialization: string;
+  customSpecialization?: string;
+  startDate: string;
+  endDate: string;
+  isCurrentlyStudying: boolean;
+  // Skills and preferences
   skills: string[];
   workTypes: string[];
   location: string;
   interests: string[];
   portfolio?: string;
+  // Optional target role for students
+  targetRole?: string;
+  // File uploads
+  profileImage?: File | null;
+  resumeFile?: File | null;
 }
 
-const TOTAL_STEPS = 7;
+const TOTAL_STEPS = 6;
 
 export default function OnboardingFlow() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -36,11 +50,24 @@ export default function OnboardingFlow() {
     firstName: '',
     lastName: '',
     currentRole: '',
+    // Education fields
+    collegeName: '',
+    course: '',
+    specialization: '',
+    customSpecialization: '',
+    startDate: '',
+    endDate: '',
+    isCurrentlyStudying: true,
+    // Skills and preferences
     skills: [],
     workTypes: [],
     location: '',
     interests: [],
     portfolio: '',
+    targetRole: '',
+    // File uploads
+    profileImage: null,
+    resumeFile: null,
   });
 
   const nextStep = () => {
@@ -81,7 +108,7 @@ export default function OnboardingFlow() {
             priority
           />
         </div>
-        
+
         {/* Gradient Orbs */}
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 rounded-full blur-[120px] animate-pulse"></div>
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/5 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }}></div>
@@ -105,7 +132,7 @@ export default function OnboardingFlow() {
           <div className="absolute -top-16 left-0 w-full flex justify-between items-center px-1 animate-fade-in">
             <div className="flex items-center gap-2 text-white font-medium tracking-tight opacity-50">
               <Icon icon="solar:atom-linear" className="text-lg" />
-              <span>Nexus</span>
+              <span>RiseUp</span>
             </div>
             <div className="text-xs text-zinc-500 font-mono">
               Step {currentStep - 1} of {TOTAL_STEPS - 1}
@@ -132,8 +159,8 @@ export default function OnboardingFlow() {
             {currentStep === 3 && <RoleStep onNext={nextStep} onBack={prevStep} data={data} updateData={updateData} />}
             {currentStep === 4 && <ProfileStep onNext={nextStep} onBack={prevStep} data={data} updateData={updateData} />}
             {currentStep === 5 && <PreferencesStep onNext={nextStep} onBack={prevStep} data={data} updateData={updateData} />}
-            {currentStep === 6 && <ResumeStep onNext={nextStep} onBack={prevStep} data={data} updateData={updateData} />}
-            {currentStep === 7 && <SuccessStep onComplete={closeOnboarding} />}
+            {currentStep === 6 && <ResumeStep onComplete={closeOnboarding} onNext={nextStep} onBack={prevStep} data={data} updateData={updateData} />}
+            {/* {currentStep === 7 && <SuccessStep onComplete={closeOnboarding} data={data} />} */}
           </div>
         </div>
 
@@ -143,13 +170,12 @@ export default function OnboardingFlow() {
             {Array.from({ length: TOTAL_STEPS - 2 }).map((_, index) => (
               <div
                 key={index}
-                className={`h-1 rounded-full transition-all duration-300 ${
-                  index + 2 === currentStep
+                className={`h-1 rounded-full transition-all duration-300 ${index + 2 === currentStep
                     ? 'w-8 bg-white'
                     : index + 2 < currentStep
-                    ? 'w-1 bg-white/50'
-                    : 'w-1 bg-white/20'
-                }`}
+                      ? 'w-1 bg-white/50'
+                      : 'w-1 bg-white/20'
+                  }`}
               ></div>
             ))}
           </div>

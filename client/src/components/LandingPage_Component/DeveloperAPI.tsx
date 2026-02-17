@@ -15,13 +15,13 @@ const DeveloperAPI: React.FC = () => {
           <span className="text-zinc-500">Accessible by API.</span>
         </h2>
         <p className="text-zinc-400 text-lg font-light mb-8 max-w-lg">
-          Fetch verified talent data, post programmatic job listings, or integrate Nexus badges into your own platform.
+          Fetch verified talent data, post programmatic job listings, or integrate RiseUp badges into your own platform.
         </p>
         <div className="space-y-4">
           {features.map((feature, index) => (
             <div key={index} className="flex items-center gap-4 text-sm text-zinc-300">
               <svg className="w-5 h-5 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M20 6L9 17l-5-5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M20 6L9 17l-5-5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               {feature}
             </div>
@@ -48,11 +48,11 @@ const DeveloperAPI: React.FC = () => {
           <div className="p-6 overflow-x-auto">
             <pre className="text-sm font-mono leading-relaxed code-syntax">
               <code>
-                <span className="text-purple-400">const</span> <span className="text-blue-400">nexus</span> = <span className="text-purple-400">require</span>(<span className="text-green-400">&apos;@nexus/sdk&apos;</span>);
+                <span className="text-purple-400">const</span> <span className="text-blue-400">RiseUp</span> = <span className="text-purple-400">require</span>(<span className="text-green-400">&apos;@RiseUp/sdk&apos;</span>);
                 {'\n\n'}
                 <span className="text-zinc-500">// Find high-velocity opportunities</span>
                 {'\n'}
-                <span className="text-purple-400">const</span> <span className="text-blue-400">jobs</span> = <span className="text-purple-400">await</span> nexus.jobs.<span className="text-blue-300">search</span>({'{'}
+                <span className="text-purple-400">const</span> <span className="text-blue-400">jobs</span> = <span className="text-purple-400">await</span> RiseUp.jobs.<span className="text-blue-300">search</span>({'{'}
                 {'\n  '}
                 <span className="text-orange-300">role</span>: <span className="text-green-400">&apos;Engineer&apos;</span>,
                 {'\n  '}
